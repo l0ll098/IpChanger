@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "npm start (client)",
+            "type": "shell",
+            "command": "npm start",
+            "problemMatcher": "$tsc",
+            "options": {
+                "cwd": "${workspaceFolder}/client/"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
