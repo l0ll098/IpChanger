@@ -12,6 +12,18 @@ export abstract class AddressesFileHanlder {
 	private static _lastId: number;
 
 
+	private static writeFile(content: string) {
+		return new Promise((resolve, reject) => {
+			fs.writeFile(AddressesFileHanlder._filePath, content, (err) => {
+				if (err) {
+					return reject(err);
+				} else {
+					return resolve(null);
+				}
+			});
+		});
+	}
+
 	/**
 	 * This method will return the path where the files should be stored.
 	 */
@@ -37,7 +49,7 @@ export abstract class AddressesFileHanlder {
 			// The lastId is -1, since data file is empty
 			AddressesFileHanlder._lastId = -1;
 		} else {
-			const file = AddressesFileHanlder.getAddressesFile();
+			const file = AddressesFileHanlder.getAllAddresses();
 			const lastAddress = file.addresses[file.addresses.length - 1];
 			AddressesFileHanlder._lastId = lastAddress ? lastAddress.id : -1;
 		}
@@ -46,25 +58,18 @@ export abstract class AddressesFileHanlder {
 	/**
 	 * Reads the addresses file
 	 */
-	public static getAddressesFile(): AddressesFile {
+	public static getAllAddresses(): AddressesFile {
 		return JSON.parse(fs.readFileSync(AddressesFileHanlder._filePath, { encoding: "utf8" }));
 	}
 
-	private static writeFile(content: string) {
-		return new Promise((resolve, reject) => {
-			fs.writeFile(AddressesFileHanlder._filePath, content, (err) => {
-				if (err) {
-					return reject(err);
-				} else {
-					return resolve(null);
-				}
-			});
-		});
+	public static getAddressById(id: number): Address | null {
+		const addresses = AddressesFileHanlder.getAllAddresses();
+		return addresses.addresses.find((addr) => addr.id === id) || null;
 	}
 
 	public static async addAddress(address: Address) {
 		try {
-			const file = AddressesFileHanlder.getAddressesFile();
+			const file = AddressesFileHanlder.getAllAddresses();
 			file.addresses.push(address);
 			await AddressesFileHanlder.writeFile(JSON.stringify(file, null, 2));
 		} catch (err) {

@@ -12,8 +12,12 @@ const router = express.Router();
 
 
 router.get("/addresses", (req, res) => {
-	const addresses = AddressesFileHanlder.getAddressesFile();
-	sendOK(res, addresses);
+	sendOK(res, AddressesFileHanlder.getAllAddresses());
+});
+
+router.get("/addresses/:id", (req, res) => {
+	// id is in base 10
+	sendOK(res, AddressesFileHanlder.getAddressById(parseInt(req.params.id, 10)));
 });
 
 router.post("/addresses", async (req, res) => {
