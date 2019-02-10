@@ -28,20 +28,12 @@ router.get("/addresses/:id", (req, res) => {
 });
 
 router.post("/addresses", async (req, res) => {
-	const address: Address = {
-		id: AddressesFileHanlder.generateId(),
-		type: req.body.type,
-		name: req.body.name,
-		isStatic: req.body.isStatic ? true : false,
-		address: req.body.address,
-		subnet: req.body.subnet,
-		gateway: req.body.gateway
-	};
-	const validAddress = addressValidator(address);
+	const address = parseAddress(req);
+	const validAddress = addressValidator(address as Address);
 
-	if (addressValidator(address)) {
+	if (typeof address === "object" && typeof validAddress === "object") {
 		try {
-			await AddressesFileHanlder.addAddress(validAddress as Address);
+			await AddressesFileHanlder.addAddress(validAddress);
 
 			return sendOK(res, { address: validAddress }, HttpStatus.Created);
 		} catch (err) {
@@ -67,6 +59,20 @@ router.delete("/addresses/:id", async (req, res) => {
 	}
 });
 
+
+function parseAddress(req: express.Request): Address | false {
+	const address: Address = {
+		id: AddressesFileHanlder.generateId(),
+		type: req.body.type,
+		name: req.body.name,
+		isStatic: req.body.isStatic ? true : false,
+		address: req.body.address,
+		subnet: req.body.subnet,
+		gateway: req.body.gateway
+	};
+
+	return address;
+}
 
 function addressValidator(toValidate: Address): Address | false {
 	// By defualt, it's an empty Address
