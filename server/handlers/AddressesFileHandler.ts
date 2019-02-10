@@ -9,6 +9,9 @@ export abstract class AddressesFileHanlder {
 	private static _dataFolder: string;
 	private static _filePath: string;
 
+	private static _lastId: number;
+
+
 	/**
 	 * This method will return the path where the files should be stored.
 	 */
@@ -30,6 +33,13 @@ export abstract class AddressesFileHanlder {
 
 			// Create the file
 			fs.writeFileSync(AddressesFileHanlder._filePath, JSON.stringify({ addresses: [] }, null, 2));
+
+			// The lastId is -1, since data file is empty
+			AddressesFileHanlder._lastId = -1;
+		} else {
+			const file = AddressesFileHanlder.getAddressesFile();
+			const lastAddress = file.addresses[file.addresses.length - 1];
+			AddressesFileHanlder._lastId = lastAddress ? lastAddress.id : -1;
 		}
 	}
 
@@ -64,5 +74,7 @@ export abstract class AddressesFileHanlder {
 		return Promise.resolve(true);
 	}
 
-
+	public static generateId(): number {
+		return ++AddressesFileHanlder._lastId;
+	}
 }

@@ -18,6 +18,7 @@ router.get("/addresses", (req, res) => {
 
 router.post("/addresses", async (req, res) => {
 	const address: Address = {
+		id: AddressesFileHanlder.generateId(),
 		type: req.body.type,
 		name: req.body.name,
 		isStatic: req.body.isStatic ? true : false,
@@ -31,7 +32,7 @@ router.post("/addresses", async (req, res) => {
 		try {
 			await AddressesFileHanlder.addAddress(validAddress as Address);
 
-			return sendOK(res, { added: true }, HttpStatus.Created);
+			return sendOK(res, { address: validAddress }, HttpStatus.Created);
 		} catch (err) {
 			return sendErr(res, HttpStatus.InternalServerError, err);
 		}
@@ -40,6 +41,7 @@ router.post("/addresses", async (req, res) => {
 	}
 
 });
+
 
 
 function addressValidator(toValidate: Address): Address | false {
@@ -72,6 +74,7 @@ function addressValidator(toValidate: Address): Address | false {
 		validAddress.name = toValidate.name;
 	}
 
+	validAddress.id = toValidate.id;
 	return validAddress;
 }
 
