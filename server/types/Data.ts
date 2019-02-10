@@ -9,5 +9,11 @@ export interface Address {
 }
 
 export interface AddressesFile {
+	$comment?: string;
 	addresses: Address[];
+}
+
+export interface IdsFile {
+	$comment?: string;
+	lastId: number;
 }

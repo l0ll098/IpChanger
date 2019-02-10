@@ -8,7 +8,7 @@ import * as routes from "./server/routes/routes";
 import { HttpStatus } from "./server/types/HttpStatus";
 import { ConsoleColors } from "./server/types/Utils";
 import { sendErr } from "./server/functions/functions";
-import { AddressesFileHanlder } from "./server/handlers/AddressesFileHandler";
+import { FilesHandler } from "./server/handlers/FilesHandler";
 
 
 const app = express();
@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // It makes sure that file to keep data is present
-AddressesFileHanlder.ensureAddressesFileIsPresent();
+FilesHandler.ensureCreated();
 
 // File router
 // By default, static files are served from the <root>/client/dist folder
