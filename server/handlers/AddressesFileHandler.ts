@@ -95,6 +95,26 @@ export abstract class AddressesFileHanlder {
 		}
 	}
 
+	public static async updateAddress(id: number, newAddress: Address) {
+		try {
+			const file = AddressesFileHanlder.getAllAddresses();
+			const index = file.addresses.findIndex((addr) => addr.id === id);
+
+			if (index === -1) {
+				return Promise.reject(true);
+			}
+
+			// Remove the old one
+			file.addresses.splice(index, 1);
+			// Add the new one
+			file.addresses.push(newAddress);
+
+			await AddressesFileHanlder.writeFile(JSON.stringify(file, null, 2));
+		} catch (err) {
+			return Promise.reject(err);
+		}
+	}
+
 	public static generateId(): number {
 		return ++AddressesFileHanlder._lastId;
 	}

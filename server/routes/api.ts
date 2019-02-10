@@ -59,10 +59,33 @@ router.delete("/addresses/:id", async (req, res) => {
 	}
 });
 
+router.put("/addresses/:id", async (req, res) => {
+	const address = parseAddress(req, false);
+	const validAddress = addressValidator(address as Address);
 
-function parseAddress(req: express.Request): Address | false {
+	if (typeof address === "object" && typeof validAddress === "object") {
+		try {
+			await AddressesFileHanlder.updateAddress(parseInt(req.params.id, 10), validAddress);
+			return sendOK(res, null);
+
+		} catch (err) {
+			if (typeof err === "boolean") {
+				return sendErr(res, HttpStatus.NotFound, { message: `Address with id ${req.params.id} has not been found!` });
+			}
+
+			return sendErr(res, HttpStatus.InternalServerError, err);
+		}
+	} else {
+		return sendErr(res, HttpStatus.BadRequest, { malformedAddress: true });
+	}
+
+});
+
+
+
+function parseAddress(req: express.Request, generateId: boolean = true): Address | false {
 	const address: Address = {
-		id: AddressesFileHanlder.generateId(),
+		id: generateId ? AddressesFileHanlder.generateId() : parseInt(req.params.id, 10),
 		type: req.body.type,
 		name: req.body.name,
 		isStatic: req.body.isStatic ? true : false,
