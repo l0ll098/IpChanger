@@ -82,7 +82,11 @@ router.put("/addresses/:id", async (req, res) => {
 });
 
 
-
+/**
+ * Reads and returns an Address from the request body
+ * @param req The HTTP request
+ * @param generateId Set this to true if you are inserting a new Address. Use false, if you are parsing the Address to perform an update
+ */
 function parseAddress(req: express.Request, generateId: boolean = true): Address | false {
 	const address: Address = {
 		id: generateId ? AddressesFileHanlder.generateId() : parseInt(req.params.id, 10),
@@ -97,6 +101,11 @@ function parseAddress(req: express.Request, generateId: boolean = true): Address
 	return address;
 }
 
+/**
+ * Checks if the passed Address is correct.
+ * If so, it will be returned. Otherwise, a false result will be returned
+ * @param toValidate The Address that has to be validated
+ */
 function addressValidator(toValidate: Address): Address | false {
 	// By defualt, it's an empty Address
 	const validAddress: Address = {
@@ -121,7 +130,7 @@ function addressValidator(toValidate: Address): Address | false {
 	}
 
 	// Check if it contains only whitespaces
-	if (/\s/g.test(toValidate.name)) {
+	if (/^\s*$/.test(toValidate.name)) {
 		return false;
 	} else {
 		validAddress.name = toValidate.name;
