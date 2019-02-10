@@ -17,7 +17,14 @@ router.get("/addresses", (req, res) => {
 
 router.get("/addresses/:id", (req, res) => {
 	// id is in base 10
-	sendOK(res, AddressesFileHanlder.getAddressById(parseInt(req.params.id, 10)));
+	const intId = parseInt(req.params.id, 10);
+	const matching = AddressesFileHanlder.getAddressById(intId);
+	if (matching) {
+		sendOK(res, matching);
+	} else {
+		sendErr(res, HttpStatus.NotFound, { message: `Address with id ${intId} has not been found!` });
+	}
+
 });
 
 router.post("/addresses", async (req, res) => {
@@ -46,6 +53,19 @@ router.post("/addresses", async (req, res) => {
 
 });
 
+router.delete("/addresses/:id", async (req, res) => {
+	try {
+		await AddressesFileHanlder.deleteAddress(parseInt(req.params.id, 10));
+		return sendOK(res, null);
+
+	} catch (err) {
+		if (typeof err === "boolean") {
+			return sendErr(res, HttpStatus.NotFound, { message: `Address with id ${req.params.id} has not been found!` });
+		}
+
+		return sendErr(res, HttpStatus.InternalServerError, err);
+	}
+});
 
 
 function addressValidator(toValidate: Address): Address | false {

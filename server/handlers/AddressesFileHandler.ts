@@ -79,6 +79,22 @@ export abstract class AddressesFileHanlder {
 		return Promise.resolve(true);
 	}
 
+	public static async deleteAddress(id: number) {
+		try {
+			const file = AddressesFileHanlder.getAllAddresses();
+			const index = file.addresses.findIndex((addr) => addr.id === id);
+
+			if (index === -1) {
+				return Promise.reject(true);
+			}
+
+			file.addresses.splice(index, 1);
+			await AddressesFileHanlder.writeFile(JSON.stringify(file, null, 2));
+		} catch (err) {
+			return Promise.reject(err);
+		}
+	}
+
 	public static generateId(): number {
 		return ++AddressesFileHanlder._lastId;
 	}
