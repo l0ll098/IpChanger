@@ -3,17 +3,6 @@
 # Data files
 /Data/
 
-# Config files
-/configs/server.json
-/configs/server.mysql.json
-/configs/server.pgsql.json
-/configs/auth.json
-
-# Client environment files
-/client/src/environments/environment.prod.ts
-/client/src/environments/environment.fakeProd.ts
-/client/src/environments/environment.ts
-
 # Client e2e configuration file
 /client/e2e/configs/
 
