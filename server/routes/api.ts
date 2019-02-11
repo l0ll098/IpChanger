@@ -2,6 +2,8 @@ import express = require("express");
 import * as isIp from "is-ip";
 
 import { AddressesFileHanlder } from "../handlers/AddressesFileHandler";
+import { CommandHandler } from "../handlers/CommandHandler";
+
 import { sendOK, sendErr } from "../functions/functions";
 import { Address } from "../types/Data";
 import { HttpStatus } from "../types/HttpStatus";
@@ -9,7 +11,21 @@ import { HttpStatus } from "../types/HttpStatus";
 
 const router = express.Router();
 
+router.get("/run/:id", async (req, res) => {
+	const intId = parseInt(req.params.id, 10);
+	const address = AddressesFileHanlder.getAddressById(intId);
 
+	try {
+		const stdout = await CommandHandler.changeIp(address);
+		return sendOK(res, { stdout });
+	} catch (err) {
+		if ((err as any).missingAdminPrivileges) {
+			return sendErr(res, HttpStatus.Forbidden, err);
+		} else {
+			return sendErr(res, HttpStatus.InternalServerError, err);
+		}
+	}
+});
 
 router.get("/addresses", (req, res) => {
 	sendOK(res, AddressesFileHanlder.getAllAddresses());
