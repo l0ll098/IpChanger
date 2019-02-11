@@ -2,12 +2,14 @@
   "name": "ipchanger",
   "version": "1.0.0",
   "description": "An utility program to easily change IP addresses",
+  "main": "dist/index.js",
   "scripts": {
     "start": "npm run build:live",
     "build:live": "nodemon --ignore Data/*.json --exec ./node_modules/.bin/ts-node -- ./index.ts",
     "build": "tsc",
     "debug": "npm run build && node --nolazy --inspect-brk=9229 ./dist/index.js",
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "electron": "npm run build && electron ./dist"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
@@ -22,6 +24,7 @@
     "@types/is-ip": "^2.0.2",
     "@types/node": "^9.6.1",
     "del": "^3.0.0",
+    "electron": "^4.0.4",
     "es6-promise": "4.2.4",
     "gulp": "^4.0.0",
     "gulp-exec": "^3.0.2",

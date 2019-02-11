@@ -3,6 +3,7 @@ import path = require("path");
 import * as fs from "fs";
 import http = require("http");
 import bodyParser = require("body-parser");
+import { app as electronApp, BrowserWindow } from "electron";
 
 import * as routes from "./server/routes/routes";
 import { HttpStatus } from "./server/types/HttpStatus";
@@ -10,6 +11,7 @@ import { ConsoleColors } from "./server/types/Utils";
 import { sendErr } from "./server/functions/functions";
 import { FilesHandler } from "./server/handlers/FilesHandler";
 
+const APP_TITLE = "Ip Changer";
 
 const app = express();
 
@@ -133,3 +135,38 @@ function onListening() {
 		: "port " + addr.port;
 	console.log(ConsoleColors.BgMagenta + "%s" + ConsoleColors.Reset, " Listening on " + bind + " ");
 }
+
+
+// Electron setup
+let win: BrowserWindow;
+
+/**
+ * This function creates the window
+ */
+function createWindow() {
+	win = new BrowserWindow({
+		width: 1366,
+		height: 768,
+		// icon: ,
+		title: APP_TITLE
+	});
+
+	win.loadURL("http://localhost:3000" + (process.env.PORT || "3000"));
+
+	win.on("closed", () => {
+		win = null;
+	});
+}
+
+electronApp.on("ready", createWindow);
+electronApp.on("window-all-closed", () => {
+	// macOs specific close process
+	if (process.platform !== "darwin") {
+		electronApp.quit();
+	}
+});
+electronApp.on("activate", () => {
+	if (win === null) {
+		createWindow();
+	}
+});
