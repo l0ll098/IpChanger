@@ -1,0 +1,30 @@
+#rootContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+mat-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+mat-toolbar a {
+    text-decoration: none;
+    color: white;
+}
+
+mat-toolbar a:visited {
+    color: white;
+}
+
+.noSelect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
