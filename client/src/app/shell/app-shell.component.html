@@ -1,7 +1,26 @@
 <div id="rootContainer">
-    <mat-toolbar color="primary">
-        <span class="noSelect">IP Changer</span>
+    <!-- Toolbar to show when user is on the home page -->
+    <mat-toolbar color="primary" *ngIf="deviceType == 'desktop' || toolbarToShow == toolbarTypes.sidenav">
+        <a href="" onclick="return false;" (click)="returnToHomePath()" class="noSelect">
+            {{ DEFAULT_TOOLBAR_TILE }}
+        </a>
     </mat-toolbar>
+
+    <!-- Toolbar to show when user changes page -->
+    <mat-toolbar color="primary" *ngIf="deviceType == 'mobile' && toolbarToShow == toolbarTypes.back">
+        <button mat-icon-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+
+        <span style="flex: 1 1 auto;">
+            {{ toolbarTitle }}
+        </span>
+    </mat-toolbar>
+
+    <!-- FAB -->
+    <button mat-fab color="accent" (click)="goToNew()" *ngIf="showNewFAB" id="newFAB">
+        <mat-icon>add</mat-icon>
+    </button>
 
     <!-- Used by children paths -->
     <router-outlet></router-outlet>

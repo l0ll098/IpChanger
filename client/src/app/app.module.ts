@@ -4,12 +4,14 @@ import { Routes, RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatToolbarModule } from "@angular/material";
+import { MatToolbarModule, MatIconModule, MatButtonModule } from "@angular/material";
+import { PlatformModule } from "@angular/cdk/platform";
 
 import { environment } from "../environments/environment";
 
 import { AppComponent } from "./app.component";
 import { AppShellComponent } from "./shell/app-shell.component";
+import { AppNewAddressComponent } from "./new-address/new-address.component";
 
 
 const appRoutes: Routes = [
@@ -17,7 +19,10 @@ const appRoutes: Routes = [
 		path: "",
 		component: AppShellComponent,
 		children: [
-
+			{
+				path: "new",
+				component: AppNewAddressComponent
+			}
 		]
 	}
 ];
@@ -26,7 +31,8 @@ const appRoutes: Routes = [
 @NgModule({
 	declarations: [
 		AppComponent,
-		AppShellComponent
+		AppShellComponent,
+		AppNewAddressComponent
 	],
 	imports: [
 		BrowserModule,
@@ -38,7 +44,10 @@ const appRoutes: Routes = [
 		),
 		HttpClientModule,
 		// Angular Material
-		MatToolbarModule
+		PlatformModule,
+		MatToolbarModule,
+		MatIconModule,
+		MatButtonModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

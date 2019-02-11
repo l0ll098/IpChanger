@@ -28,3 +28,9 @@ mat-toolbar a:visited {
     -ms-user-select: none;
     user-select: none;
 }
+
+#newFAB {
+	position: fixed;
+	right: 16px;
+	bottom: 16px;
+}
