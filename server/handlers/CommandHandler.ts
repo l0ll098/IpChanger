@@ -1,10 +1,14 @@
-import { exec, spawnSync } from "child_process";
-import * as path from "path";
-
+import { spawnSync } from "child_process";
 import { Address } from "../types/Data";
 
-// netsh interface ipv4 set address name="YOUR INTERFACE NAME" static IP_ADDRESS SUBNET_MASK GATEWAY
-// netsh interface ipv4 set address name="Wi-Fi" static 192.168.3.8 255.255.255.0 192.168.3.1
+// Command format to change IP:
+// 		netsh interface ipv4 set address name="YOUR INTERFACE NAME" static IP_ADDRESS SUBNET_MASK GATEWAY
+// Example:
+// 		netsh interface ipv4 set address name="Wi-Fi" static 192.168.3.8 255.255.255.0 192.168.3.1
+
+/**
+ * An helper class to run commands
+ */
 export abstract class CommandHandler {
 
 	public static changeIp(address: Address) {
