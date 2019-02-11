@@ -41,7 +41,11 @@ const clientDistPath = __dirname.endsWith("dist") ? "../client/dist" : "client/d
 if (fs.existsSync(clientDistPath)) {
 	app.use(express.static(path.join(__dirname, clientDistPath)));
 } else {
-	console.log("Static file serving is not used");
+	if (fs.existsSync(path.join(__dirname, "client"))) {
+		app.use(express.static(path.join(__dirname, "client")));
+	} else {
+		console.log("Client dist folder has not been found, did you forget it?");
+	}
 }
 
 // Set routes router
@@ -50,10 +54,14 @@ app.use("/", routes.router);
 // Catch all other routes and return the index file
 // This catch all route, denoted with *, MUST come last after all other API routes have been defined
 app.use("*", (req, res) => {
-	if (fs.existsSync(path.join(__dirname, "client"))) {
-		res.sendFile(path.join(__dirname, "client", "index.html"));
+	if (fs.existsSync(clientDistPath)) {
+		res.sendFile(path.join(__dirname, clientDistPath, "index.html"));
 	} else {
-		sendErr(res, HttpStatus.NotFound, { error: "Page not found" }, "Page not found");
+		if (fs.existsSync(path.join(__dirname, "client"))) {
+			res.sendFile(path.join(__dirname, "client", "index.html"));
+		} else {
+			sendErr(res, HttpStatus.NotFound, { error: "Page not found" }, "Page not found");
+		}
 	}
 });
 
@@ -151,7 +159,7 @@ function createWindow() {
 		title: APP_TITLE
 	});
 
-	win.loadURL("http://localhost:3000" + (process.env.PORT || "3000"));
+	win.loadURL("http://localhost:" + (process.env.PORT || "3000") + "/");
 
 	win.on("closed", () => {
 		win = null;
