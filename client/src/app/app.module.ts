@@ -2,10 +2,18 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatToolbarModule, MatIconModule, MatButtonModule } from "@angular/material";
 import { PlatformModule } from "@angular/cdk/platform";
+import {
+	MatToolbarModule,
+	MatIconModule,
+	MatButtonModule,
+	MatInputModule,
+	MatRadioModule,
+	MatFormFieldModule
+} from "@angular/material";
 
 import { environment } from "../environments/environment";
 
@@ -43,11 +51,16 @@ const appRoutes: Routes = [
 			{ enableTracing: (environment.enableAngularRoutingLog ? true : false) }
 		),
 		HttpClientModule,
+		ReactiveFormsModule,
+		FormsModule,
 		// Angular Material
 		PlatformModule,
 		MatToolbarModule,
 		MatIconModule,
-		MatButtonModule
+		MatButtonModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatRadioModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

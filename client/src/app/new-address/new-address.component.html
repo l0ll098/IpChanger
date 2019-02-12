@@ -1,0 +1,39 @@
+<div class="centered form">
+    <p>Insert network details</p>
+
+    <div [formGroup]="newAddressFG">
+        <div class="sameLine">
+            <div>
+                <span>Choose IP version: </span>
+                <mat-radio-group class="fullPage" formControlName="type">
+                    <mat-radio-button value="ipv4" checked>ipv4</mat-radio-button>
+                    <mat-radio-button value="ipv6">ipv6</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div>
+                <span>Static/Dynamic: </span>
+                <mat-radio-group class="fullPage" formControlName="isStatic">
+                    <mat-radio-button value="true" checked>static</mat-radio-button>
+                    <mat-radio-button value="false">dynamic</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+
+        <div>
+            <mat-form-field class="fullPage">
+                <input type="text" matInput #name formControlName="name" placeholder="Enter interface name" required
+                    maxlength="10">
+                <mat-hint align="end">{{name.value?.length || 0}}/10</mat-hint>
+                <mat-error *ngIf="FormControls.name.hasError('required')">
+                    This field is <strong>required</strong>!
+                </mat-error>
+                <mat-error *ngIf="FormControls.name.hasError('maxlength')">
+                    Too long!
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+
+    </div>
+</div>

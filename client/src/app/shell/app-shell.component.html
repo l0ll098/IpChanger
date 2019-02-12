@@ -17,11 +17,13 @@
         </span>
     </mat-toolbar>
 
-    <!-- FAB -->
-    <button mat-fab color="accent" (click)="goToNew()" *ngIf="showNewFAB" id="newFAB">
-        <mat-icon>add</mat-icon>
-    </button>
+    <div id="inner-content">
+        <!-- Used by children paths -->
+        <router-outlet></router-outlet>
 
-    <!-- Used by children paths -->
-    <router-outlet></router-outlet>
+        <!-- FAB -->
+        <button mat-fab color="accent" (click)="goToNew()" *ngIf="showNewFAB" id="newFAB">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
 </div>
