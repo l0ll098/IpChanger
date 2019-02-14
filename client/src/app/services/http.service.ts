@@ -4,7 +4,7 @@ import { Address } from "../models/Address";
 
 @Injectable()
 export class HttpService {
-	private api = "http://localhost:4200/api/";
+	private api = "http://" + location.host + "/api/";
 
 	constructor(private http: HttpClient) { }
 

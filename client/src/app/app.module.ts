@@ -32,6 +32,7 @@ import { AppComponent } from "./app.component";
 import { AppShellComponent } from "./components/shell/app-shell.component";
 import { AppAddressFormFieldComponent } from "./components/address-form-field/address-form-field.component";
 import { AppNewAddressComponent } from "./components/new-address/new-address.component";
+import { DialogComponent } from "./components/dialog/dialog.component";
 
 import { HttpService } from "./services/http.service";
 
@@ -51,6 +52,7 @@ const appRoutes: Routes = [
 
 @NgModule({
 	declarations: [
+		DialogComponent,
 		AppComponent,
 		AppShellComponent,
 		AppAddressFormFieldComponent,
@@ -90,6 +92,11 @@ const appRoutes: Routes = [
 	providers: [
 		HttpService
 	],
-	bootstrap: [AppComponent]
+	bootstrap: [
+		AppComponent
+	],
+	entryComponents: [
+		DialogComponent
+	]
 })
 export class AppModule { }

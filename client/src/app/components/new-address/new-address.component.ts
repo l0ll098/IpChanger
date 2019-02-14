@@ -1,7 +1,13 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
-import { Ip } from "../../models/Ip";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { MatDialog } from "@angular/material";
+
+import { DialogComponent } from "../dialog/dialog.component";
 import { HttpService } from "../../services/http.service";
+import { Address } from "../../models/Address";
+import { Ip } from "../../models/Ip";
+
 
 @Component({
 	selector: "app-new-address",
@@ -10,6 +16,7 @@ import { HttpService } from "../../services/http.service";
 })
 export class AppNewAddressComponent {
 
+	public disableSaveButton = false;
 	public FormControls = {
 		type: new FormControl(),
 		name: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
@@ -28,7 +35,11 @@ export class AppNewAddressComponent {
 		gateway: this.FormControls.gateway
 	});
 
-	constructor(private httpService: HttpService) {
+	constructor(
+		private httpService: HttpService,
+		private router: Router,
+		private dialog: MatDialog) {
+
 		// Set default values
 		this.FormControls.type.setValue("ipv4");
 		this.FormControls.isStatic.setValue("true");
@@ -39,21 +50,39 @@ export class AppNewAddressComponent {
 	}
 
 	async save() {
+		this.disableSaveButton = true;
 		const type = this.FormControls.type.value;
 
 		try {
-			const res = await this.httpService.postAddress({
-				isStatic: this.FormControls.isStatic.value,
+			const address: Address = {
+				isStatic: this.FormControls.isStatic.value === "true" ? true : false,
 				name: this.FormControls.name.value,
 				type: type,
 				address: this.ipToString(type, this.FormControls.address.value),
 				subnet: this.ipToString(type, this.FormControls.subnet.value),
-				gateway: this.ipToString(type, this.FormControls.gateway.value),
-			});
+				gateway: this.ipToString(type, this.FormControls.gateway.value)
+			};
+			console.log(address);
+
+			const res = await this.httpService.postAddress(address);
 
 			console.log(res);
+			this.disableSaveButton = false;
+			this.router.navigate(["/"]);
 		} catch (err) {
 			console.log(err);
+
+			this.dialog.open(DialogComponent, {
+				data: {
+					title: "Error",
+					message: "Something went wrong saving data. Please retry later.",
+					doActionBtn: {
+						text: "Ok"
+					}
+				}
+			});
+
+			this.disableSaveButton = false;
 		}
 
 	}

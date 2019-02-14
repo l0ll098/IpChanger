@@ -35,7 +35,8 @@
         </div>
 
         <mat-form-field class="fullPage">
-            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter address" formControlName="address"></app-address-form-field>
+            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter address"
+                formControlName="address"></app-address-form-field>
             <mat-error *ngIf="FormControls.address.hasError('required')">
                 This field is <strong>required</strong>!
             </mat-error>
@@ -45,7 +46,8 @@
         </mat-form-field>
 
         <mat-form-field class="fullPage">
-            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter subnet mask" formControlName="subnet"></app-address-form-field>
+            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter subnet mask"
+                formControlName="subnet"></app-address-form-field>
             <mat-error *ngIf="FormControls.subnet.hasError('required')">
                 This field is <strong>required</strong>!
             </mat-error>
@@ -55,7 +57,8 @@
         </mat-form-field>
 
         <mat-form-field class="fullPage">
-            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter gateway address" formControlName="gateway"></app-address-form-field>
+            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter gateway address"
+                formControlName="gateway"></app-address-form-field>
             <mat-error *ngIf="FormControls.gateway.hasError('required')">
                 This field is <strong>required</strong>!
             </mat-error>
@@ -65,5 +68,6 @@
         </mat-form-field>
     </div>
 
-    <button mat-raised-button color="accent" (click)="save()">Save</button>
+    <button mat-raised-button color="accent" (click)="save()" id="saveBtn"
+        [disabled]="!newAddressFG.valid || disableSaveButton">Save</button>
 </div>
