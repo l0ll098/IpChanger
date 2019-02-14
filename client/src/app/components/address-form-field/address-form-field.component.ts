@@ -143,7 +143,7 @@ export class AppAddressFormFieldComponent
 			block8: this.FormControls.block8
 		}, {
 				// Required in order to validate the form as a unique indivisible thing
-				// validators: validator("minutes", "seconds", "millisecs")
+				validators: validator(this.type, "block1", "block2", "block3", "block4", "block5", "block6", "block7", "block8")
 			}
 		);
 
@@ -211,4 +211,62 @@ export class AppAddressFormFieldComponent
 	setDisabledState?(isDisabled: boolean): void {
 		this.disabled = isDisabled;
 	}
+}
+
+
+export function ipv4Val(control: AbstractControl): { [key: string]: any } | null {
+	if (isNaN(control.value)) {
+		return { ipAddress: { valid: false, value: control.value } };
+	}
+
+	if (control.value < 0) {
+		return { ipAddress: { valid: false, value: control.value } };
+	}
+
+	if (control.value > 255) {
+		return { ipAddress: { valid: false, value: control.value } };
+	}
+
+	return null;
+}
+
+export function ipv6Val(control: AbstractControl): { [key: string]: any } | null {
+	if (isNaN(control.value)) {
+		// const regex = new RegExp("[a-fA-F]{1,4}");
+		// if (!regex.test(control.value)) {
+		// 	return { valid: false, value: control.value };
+		// }
+	}
+
+	return null;
+}
+
+function validator(type: "ipv4" | "ipv6", b1, b2, b3, b4, b5, b6, b7, b8) {
+	return (group: FormGroup): { [key: string]: any } => {
+		const block1 = group.controls[b1];
+		const block2 = group.controls[b2];
+		const block3 = group.controls[b3];
+		const block4 = group.controls[b4];
+		const block5 = group.controls[b5];
+		const block6 = group.controls[b6];
+		const block7 = group.controls[b7];
+		const block8 = group.controls[b8];
+
+		// Assemble all the errors eventually returned from the validators into an unique object
+		let errors: object;
+		if (type === "ipv4") {
+			errors = { ...ipv4Val(block1), ...ipv4Val(block2), ...ipv4Val(block3), ...ipv4Val(block4) };
+		} else {
+			// tslint:disable-next-line:max-line-length
+			errors = { ...ipv6Val(block1), ...ipv6Val(block2), ...ipv6Val(block3), ...ipv6Val(block4), ...ipv6Val(block5), ...ipv6Val(block6), ...ipv6Val(block7), ...ipv6Val(block8) };
+		}
+
+
+		// Check that there is not an error by checking if errors isn't null and that it isn't empty
+		if (errors && !(Object.keys(errors).length === 0 && errors.constructor === Object)) {
+			return errors;
+		} else {
+			return null;
+		}
+	};
 }
