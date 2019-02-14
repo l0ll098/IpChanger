@@ -166,15 +166,18 @@ function createWindow() {
 	});
 }
 
-electronApp.on("ready", createWindow);
-electronApp.on("window-all-closed", () => {
-	// macOs specific close process
-	if (process.platform !== "darwin") {
-		electronApp.quit();
-	}
-});
-electronApp.on("activate", () => {
-	if (win === null) {
-		createWindow();
-	}
-});
+if (electronApp) {
+	electronApp.on("ready", createWindow);
+	electronApp.on("window-all-closed", () => {
+		// macOs specific close process
+		if (process.platform !== "darwin") {
+			electronApp.quit();
+		}
+	});
+	electronApp.on("activate", () => {
+		if (win === null) {
+			createWindow();
+		}
+	});
+}
+

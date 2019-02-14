@@ -33,6 +33,7 @@ import { AppShellComponent } from "./components/shell/app-shell.component";
 import { AppAddressFormFieldComponent } from "./components/address-form-field/address-form-field.component";
 import { AppNewAddressComponent } from "./components/new-address/new-address.component";
 
+import { HttpService } from "./services/http.service";
 
 const appRoutes: Routes = [
 	{
@@ -86,7 +87,9 @@ const appRoutes: Routes = [
 		MatDialogModule,
 		MatRadioModule
 	],
-	providers: [],
+	providers: [
+		HttpService
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

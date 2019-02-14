@@ -47,7 +47,7 @@ router.post("/addresses", async (req, res) => {
 	const address = parseAddress(req);
 	const validAddress = addressValidator(address as Address);
 
-	if (typeof address === "object" && typeof validAddress === "object") {
+	if (typeof address === "string" && typeof validAddress === "string") {
 		try {
 			await AddressesFileHanlder.addAddress(validAddress);
 

@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
 import { Ip } from "../../models/Ip";
+import { HttpService } from "../../services/http.service";
 
 @Component({
 	selector: "app-new-address",
@@ -27,7 +28,7 @@ export class AppNewAddressComponent {
 		gateway: this.FormControls.gateway
 	});
 
-	constructor() {
+	constructor(private httpService: HttpService) {
 		// Set default values
 		this.FormControls.type.setValue("ipv4");
 		this.FormControls.isStatic.setValue("true");
@@ -37,9 +38,32 @@ export class AppNewAddressComponent {
 		this.FormControls.gateway.setValue({ block1: "", block2: "", block3: "", block4: "" } as Ip);
 	}
 
-	save() {
-		console.log(this.FormControls.type.value);
-		console.log(this.FormControls.isStatic.value);
-		console.log(this.FormControls.address.value);
+	async save() {
+		const type = this.FormControls.type.value;
+
+		try {
+			const res = await this.httpService.postAddress({
+				isStatic: this.FormControls.isStatic.value,
+				name: this.FormControls.name.value,
+				type: type,
+				address: this.ipToString(type, this.FormControls.address.value),
+				subnet: this.ipToString(type, this.FormControls.subnet.value),
+				gateway: this.ipToString(type, this.FormControls.gateway.value),
+			});
+
+			console.log(res);
+		} catch (err) {
+			console.log(err);
+		}
+
+	}
+
+	private ipToString(type: "ipv4" | "ipv6", ip: Ip): string {
+		if (type === "ipv4") {
+			return ip.block1 + "." + ip.block2 + "." + ip.block3 + "." + ip.block4;
+		} else {
+			// tslint:disable-next-line:max-line-length
+			return ip.block1 + ":" + ip.block2 + ":" + ip.block3 + ":" + ip.block4 + ":" + ip.block5 + ":" + ip.block6 + ":" + ip.block7 + ":" + ip.block8;
+		}
 	}
 }
