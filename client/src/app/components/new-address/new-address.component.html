@@ -23,8 +23,8 @@
         <div>
             <mat-form-field class="fullPage">
                 <input type="text" matInput #name formControlName="name" placeholder="Enter interface name" required
-                    maxlength="10">
-                <mat-hint align="end">{{name.value?.length || 0}}/10</mat-hint>
+                    maxlength="100">
+                <mat-hint align="end">{{name.value?.length || 0}}/100</mat-hint>
                 <mat-error *ngIf="FormControls.name.hasError('required')">
                     This field is <strong>required</strong>!
                 </mat-error>
@@ -34,7 +34,7 @@
             </mat-form-field>
         </div>
 
-        <mat-form-field>
+        <mat-form-field class="fullPage">
             <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter address" formControlName="address"></app-address-form-field>
             <mat-error *ngIf="FormControls.address.hasError('required')">
                 This field is <strong>required</strong>!
@@ -43,7 +43,27 @@
                 Malformed IP address
             </mat-error>
         </mat-form-field>
+
+        <mat-form-field class="fullPage">
+            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter subnet mask" formControlName="subnet"></app-address-form-field>
+            <mat-error *ngIf="FormControls.subnet.hasError('required')">
+                This field is <strong>required</strong>!
+            </mat-error>
+            <mat-error *ngIf="FormControls.subnet.hasError('ipAddress')">
+                Malformed IP address
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="fullPage">
+            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter gateway address" formControlName="gateway"></app-address-form-field>
+            <mat-error *ngIf="FormControls.gateway.hasError('required')">
+                This field is <strong>required</strong>!
+            </mat-error>
+            <mat-error *ngIf="FormControls.gateway.hasError('ipAddress')">
+                Malformed IP address
+            </mat-error>
+        </mat-form-field>
     </div>
 
-    <button (click)="save()">Save</button>
+    <button mat-raised-button color="accent" (click)="save()">Save</button>
 </div>

@@ -35,3 +35,7 @@ mat-error:first-child {
 #saveBtn {
     margin-top: 8px;
 }
+
+mat-form-field {
+    margin-top: 8px;
+}

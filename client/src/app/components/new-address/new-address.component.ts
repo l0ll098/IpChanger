@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
-import { Ip } from '../../models/Ip';
+import { Ip } from "../../models/Ip";
 
 @Component({
 	selector: "app-new-address",
@@ -11,11 +11,11 @@ export class AppNewAddressComponent {
 
 	public FormControls = {
 		type: new FormControl(),
-		name: new FormControl(null, [Validators.required, Validators.maxLength(10)]),
+		name: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
 		isStatic: new FormControl(),
 		address: new FormControl(null, [Validators.required]),
-		subnet: new FormControl(),
-		gateway: new FormControl()
+		subnet: new FormControl(null, [Validators.required]),
+		gateway: new FormControl(null, [Validators.required])
 	};
 
 	public newAddressFG = new FormGroup({
@@ -33,6 +33,8 @@ export class AppNewAddressComponent {
 		this.FormControls.isStatic.setValue("true");
 
 		this.FormControls.address.setValue({ block1: "", block2: "", block3: "", block4: "" } as Ip);
+		this.FormControls.subnet.setValue({ block1: "", block2: "", block3: "", block4: "" } as Ip);
+		this.FormControls.gateway.setValue({ block1: "", block2: "", block3: "", block4: "" } as Ip);
 	}
 
 	save() {
