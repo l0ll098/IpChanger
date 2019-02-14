@@ -34,6 +34,10 @@
             </mat-form-field>
         </div>
 
-
+        <mat-form-field>
+            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter address" formControlName="address"></app-address-form-field>
+        </mat-form-field>
     </div>
+
+    <button (click)="save()">Save</button>
 </div>

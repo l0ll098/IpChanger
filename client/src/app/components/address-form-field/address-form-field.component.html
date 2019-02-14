@@ -1,0 +1,31 @@
+<div *ngIf="type == 'ipv4'; else ipv6">
+    <div [formGroup]="parts" class="address-input-container">
+        <input type="text" class="address-input-element" formControlName="block1" (input)="onInput($event)" maxlength=3 min="0" max="255">
+        <span class="address-input-spacer">.</span>
+        <input type="text" class="address-input-element" formControlName="block2" (input)="onInput($event)" maxlength=3 min="0" max="255">
+        <span class="address-input-spacer">.</span>
+        <input type="text" class="address-input-element" formControlName="block3" (input)="onInput($event)" maxlength=3 min="0" max="255">
+        <span class="address-input-spacer">.</span>
+        <input type="text" class="address-input-element" formControlName="block4" (input)="onInput($event)" maxlength=3 min="0" max="255">
+    </div>
+</div>
+
+<ng-template #ipv6>
+    <div [formGroup]="parts" class="address-input-container">
+        <input type="text" class="address-input-element" formControlName="block1" (input)="onInput($event)">
+        <span class="address-input-spacer">:</span>
+        <input type="text" class="address-input-element" formControlName="block2" (input)="onInput($event)">
+        <span class="address-input-spacer">:</span>
+        <input type="text" class="address-input-element" formControlName="block3" (input)="onInput($event)">
+        <span class="address-input-spacer">:</span>
+        <input type="text" class="address-input-element" formControlName="block4" (input)="onInput($event)">
+        <span class="address-input-spacer">:</span>
+        <input type="text" class="address-input-element" formControlName="block5" (input)="onInput($event)">
+        <span class="address-input-spacer">:</span>
+        <input type="text" class="address-input-element" formControlName="block6" (input)="onInput($event)">
+        <span class="address-input-spacer">:</span>
+        <input type="text" class="address-input-element" formControlName="block7" (input)="onInput($event)">
+        <span class="address-input-spacer">:</span>
+        <input type="text" class="address-input-element" formControlName="block8" (input)="onInput($event)">
+    </div>
+</ng-template>

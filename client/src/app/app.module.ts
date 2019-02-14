@@ -2,24 +2,36 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { PlatformModule } from "@angular/cdk/platform";
 import {
 	MatToolbarModule,
-	MatIconModule,
 	MatButtonModule,
+	MatIconModule,
+	MatListModule,
+	MatSidenavModule,
+	MatCheckboxModule,
+	MatSlideToggleModule,
+	MatFormFieldModule,
+	MatAutocompleteModule,
 	MatInputModule,
-	MatRadioModule,
-	MatFormFieldModule
+	MatSelectModule,
+	MatTableModule,
+	MatPaginatorModule,
+	MatSortModule,
+	MatSnackBarModule,
+	MatDialogModule,
+	MatRadioModule
 } from "@angular/material";
 
 import { environment } from "../environments/environment";
 
 import { AppComponent } from "./app.component";
-import { AppShellComponent } from "./shell/app-shell.component";
-import { AppNewAddressComponent } from "./new-address/new-address.component";
+import { AppShellComponent } from "./components/shell/app-shell.component";
+import { AppAddressFormFieldComponent } from "./components/address-form-field/address-form-field.component";
+import { AppNewAddressComponent } from "./components/new-address/new-address.component";
 
 
 const appRoutes: Routes = [
@@ -40,6 +52,7 @@ const appRoutes: Routes = [
 	declarations: [
 		AppComponent,
 		AppShellComponent,
+		AppAddressFormFieldComponent,
 		AppNewAddressComponent
 	],
 	imports: [
@@ -50,16 +63,27 @@ const appRoutes: Routes = [
 			appRoutes,
 			{ enableTracing: (environment.enableAngularRoutingLog ? true : false) }
 		),
-		HttpClientModule,
-		ReactiveFormsModule,
-		FormsModule,
-		// Angular Material
 		PlatformModule,
+		FormsModule,
+		ReactiveFormsModule,
+		HttpClientModule,
+		// Angular Material
 		MatToolbarModule,
-		MatIconModule,
 		MatButtonModule,
+		MatIconModule,
+		MatListModule,
+		MatSidenavModule,
+		MatCheckboxModule,
+		MatSlideToggleModule,
 		MatFormFieldModule,
+		MatAutocompleteModule,
 		MatInputModule,
+		MatSelectModule,
+		MatTableModule,
+		MatPaginatorModule,
+		MatSortModule,
+		MatSnackBarModule,
+		MatDialogModule,
 		MatRadioModule
 	],
 	providers: [],
