@@ -13,7 +13,9 @@ export abstract class AddressesFileHanlder {
 	 * Reads the addresses file
 	 */
 	public static getAllAddresses(): AddressesFile {
-		return FilesHandler.readFile(FilesHandler._addressesFilePath) as AddressesFile;
+		const file = FilesHandler.readFile(FilesHandler._addressesFilePath) as AddressesFile;
+		delete file.$comment;
+		return file;
 	}
 
 	public static getAddressById(id: number): Address | null {

@@ -31,6 +31,7 @@ import { environment } from "../environments/environment";
 import { AppComponent } from "./app.component";
 import { AppShellComponent } from "./components/shell/app-shell.component";
 import { AppAddressFormFieldComponent } from "./components/address-form-field/address-form-field.component";
+import { AppAddressesListComponent } from "./components/addresses-list/addresses-list.component";
 import { AppNewAddressComponent } from "./components/new-address/new-address.component";
 import { DialogComponent } from "./components/dialog/dialog.component";
 
@@ -41,6 +42,10 @@ const appRoutes: Routes = [
 		path: "",
 		component: AppShellComponent,
 		children: [
+			{
+				path: "",
+				component: AppAddressesListComponent
+			},
 			{
 				path: "new",
 				component: AppNewAddressComponent
@@ -56,7 +61,8 @@ const appRoutes: Routes = [
 		AppComponent,
 		AppShellComponent,
 		AppAddressFormFieldComponent,
-		AppNewAddressComponent
+		AppNewAddressComponent,
+		AppAddressesListComponent
 	],
 	imports: [
 		BrowserModule,

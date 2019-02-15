@@ -68,6 +68,8 @@ export class AppShellComponent implements AfterViewInit {
 				this.goToPath(this.location.path());
 			}
 		});
+
+		this.showNewFAB = true;
 	}
 
 

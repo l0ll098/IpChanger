@@ -1,0 +1,35 @@
+@media screen and (min-width: 960px) {
+    .restrictedPage {
+        width: 53%;
+        margin: auto auto auto auto;
+    }
+
+    .settingsSelect {
+        width: 100px;
+    }
+}
+
+@media screen and (max-width: 959px) {
+    .restrictedPage {
+        width: 100%;
+        margin: auto auto auto auto;
+    }
+
+    .settingsSelect {
+        width: 50px;
+    }
+}
+
+#subheader {
+    margin-left: 48px;
+}
+
+.disabledOption {
+    color: #bdbdbd;
+}
+
+.secondaryText {
+    word-wrap: break-word; 
+    white-space: pre-wrap; 
+    margin-right: 10px;
+}
