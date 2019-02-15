@@ -1,10 +1,12 @@
 <div class="restrictedPage">
-    <mat-list>
-        <mat-list-item *ngFor="let addr of addresses">
-            <h3 matLine> {{addr.name}} </h3>
-            <i matLine class="secondaryText">IP: {{addr.address}}</i>
-            <i matLine class="secondaryText">Gateway: {{addr.gateway}}; Subnet: {{addr.subnet}}</i>
-            <mat-slide-toggle></mat-slide-toggle>
-        </mat-list-item>
-    </mat-list>
+    <div [formGroup]="addressFG">
+        <mat-list>
+            <mat-list-item *ngFor="let addr of addresses; let i = index">
+                <h3 matLine> {{addr.name}} </h3>
+                <i matLine class="secondaryText">IP: {{addr.address}}</i>
+                <i matLine class="secondaryText">Gateway: {{addr.gateway}}; Subnet: {{addr.subnet}}</i>
+                <mat-slide-toggle (change)="onchange($event, i)" id="{{i}}" formControlName="{{'fc' + i}}"></mat-slide-toggle>
+            </mat-list-item>
+        </mat-list>
+    </div>
 </div>
