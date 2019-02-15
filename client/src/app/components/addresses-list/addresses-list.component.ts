@@ -80,6 +80,14 @@ export class AppAddressesListComponent implements OnInit {
 
 			if (event.checked) {
 				console.log("call run change ip on val: ", this.addresses[id]);
+
+				this.httpService.changeIp(this.addresses[id])
+					.then(() => {
+						console.log("changed");
+					})
+					.catch((err) => {
+						console.log(err);
+					});
 			}
 
 		} else {

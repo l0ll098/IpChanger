@@ -24,4 +24,13 @@ export class HttpService {
 			return Promise.reject(err);
 		}
 	}
+
+	async changeIp(addresses: Address) {
+		try {
+			const res = await this.http.get(this.api + "/run/" + addresses.id).toPromise() as any;
+			return Promise.resolve(true);
+		} catch (err) {
+			return Promise.reject(err);
+		}
+	}
 }
