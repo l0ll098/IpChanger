@@ -13,6 +13,9 @@ const router = express.Router();
 
 router.get("/run/:id", async (req, res) => {
 	const intId = parseInt(req.params.id, 10);
+	if (typeof intId !== "number") {
+		return sendErr(res, HttpStatus.NotFound, { invalidId: req.params.id });
+	}
 	const address = AddressesFileHanlder.getAddressById(intId);
 
 	try {
@@ -21,9 +24,12 @@ router.get("/run/:id", async (req, res) => {
 	} catch (err) {
 		if ((err as any).missingAdminPrivileges) {
 			return sendErr(res, HttpStatus.Forbidden, err);
-		} else {
-			return sendErr(res, HttpStatus.InternalServerError, err);
 		}
+
+		if ((err as any).invalidInterface) {
+			return sendErr(res, HttpStatus.NotModified, err);
+		}
+		return sendErr(res, HttpStatus.InternalServerError, err);
 	}
 });
 

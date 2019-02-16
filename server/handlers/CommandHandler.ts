@@ -21,7 +21,13 @@ export abstract class CommandHandler {
 			case 0:
 				return Promise.resolve({ changed: true });
 			case 1:
-				return Promise.reject({ missingAdminPrivileges: true });
+				// Check if the provided interface doesn't exist.
+				// In this case, an error complaining about syntax of file, dir or volume will be given
+				if (cmd.stdout.toString().indexOf("file") > -1) {
+					return Promise.reject({ invalidInterface: true });
+				} else {
+					return Promise.reject({ missingAdminPrivileges: true });
+				}
 			default:
 				return Promise.reject(cmd.stderr.toString());
 		}
