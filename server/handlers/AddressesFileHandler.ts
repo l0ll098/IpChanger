@@ -9,6 +9,10 @@ export abstract class AddressesFileHanlder {
 		return FilesHandler.writeFile(FilesHandler._addressesFilePath, content);
 	}
 
+	private static readFile(): AddressesFile {
+		return FilesHandler.readFile(FilesHandler._addressesFilePath) as AddressesFile;
+	}
+
 	/**
 	 * Reads the addresses file
 	 */
@@ -25,7 +29,7 @@ export abstract class AddressesFileHanlder {
 
 	public static async addAddress(address: Address) {
 		try {
-			const file = AddressesFileHanlder.getAllAddresses();
+			const file = AddressesFileHanlder.readFile();
 			file.addresses.push(address);
 			await AddressesFileHanlder.writeFile(JSON.stringify(file, null, 2));
 		} catch (err) {
