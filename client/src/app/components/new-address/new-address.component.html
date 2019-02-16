@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div>
+        <div class="sameLine">
             <mat-form-field class="fullPage">
                 <input type="text" matInput #name formControlName="name" placeholder="Enter interface name" required
                     maxlength="100">
@@ -29,6 +29,18 @@
                     This field is <strong>required</strong>!
                 </mat-error>
                 <mat-error *ngIf="FormControls.name.hasError('maxlength')">
+                    Too long!
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="fullPage">
+                <input type="text" matInput #description formControlName="description" placeholder="Enter a description" required
+                    maxlength="100">
+                <mat-hint align="end">{{description.value?.length || 0}}/255</mat-hint>
+                <mat-error *ngIf="FormControls.description.hasError('required')">
+                    This field is <strong>required</strong>!
+                </mat-error>
+                <mat-error *ngIf="FormControls.description.hasError('maxlength')">
                     Too long!
                 </mat-error>
             </mat-form-field>

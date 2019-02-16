@@ -6,4 +6,5 @@ export interface Address {
 	address: string;
 	subnet: string;
 	gateway: string;
+	description: string;
 }

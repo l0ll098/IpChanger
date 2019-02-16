@@ -2,7 +2,8 @@
     <div [formGroup]="addressFG">
         <mat-list>
             <mat-list-item *ngFor="let addr of addresses; let i = index">
-                <h3 matLine> {{addr.name}} </h3>
+                <h3 matLine *ngIf="addr.description && addr.description.length > 0">{{addr.name}} - {{addr.description}}</h3>
+                <h3 matLine *ngIf="!addr.description || addr.description.length == 0">{{addr.name}} - <i>No description provided</i></h3>
                 <i matLine class="secondaryText">IP: {{addr.address}}</i>
                 <i matLine class="secondaryText">Gateway: {{addr.gateway}}; Subnet: {{addr.subnet}}</i>
                 <mat-slide-toggle (change)="onchange($event, i)" id="{{i}}" formControlName="{{'fc' + i}}"></mat-slide-toggle>

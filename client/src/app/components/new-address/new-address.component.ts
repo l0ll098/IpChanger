@@ -20,6 +20,7 @@ export class AppNewAddressComponent {
 	public FormControls = {
 		type: new FormControl(),
 		name: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+		description: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
 		isStatic: new FormControl(),
 		address: new FormControl(null, [Validators.required]),
 		subnet: new FormControl(null, [Validators.required]),
@@ -29,6 +30,7 @@ export class AppNewAddressComponent {
 	public newAddressFG = new FormGroup({
 		type: this.FormControls.type,
 		name: this.FormControls.name,
+		description: this.FormControls.description,
 		isStatic: this.FormControls.isStatic,
 		address: this.FormControls.address,
 		subnet: this.FormControls.subnet,
@@ -60,7 +62,8 @@ export class AppNewAddressComponent {
 				type: type,
 				address: this.ipToString(type, this.FormControls.address.value),
 				subnet: this.ipToString(type, this.FormControls.subnet.value),
-				gateway: this.ipToString(type, this.FormControls.gateway.value)
+				gateway: this.ipToString(type, this.FormControls.gateway.value),
+				description: this.FormControls.description.value
 			};
 			console.log(address);
 

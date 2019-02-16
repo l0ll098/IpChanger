@@ -117,7 +117,8 @@ function parseAddress(req: express.Request, generateId: boolean = true): Address
 		isStatic: req.body.isStatic ? true : false,
 		address: req.body.address,
 		subnet: req.body.subnet,
-		gateway: req.body.gateway
+		gateway: req.body.gateway,
+		description: req.body.description
 	};
 
 	return address;
@@ -136,7 +137,8 @@ function addressValidator(toValidate: Address): Address | false {
 		isStatic: true,
 		address: "",
 		subnet: "",
-		gateway: ""
+		gateway: "",
+		description: ""
 	};
 
 	if (toValidate.type !== "ipv4" && toValidate.type !== "ipv6") {
@@ -156,6 +158,13 @@ function addressValidator(toValidate: Address): Address | false {
 		return false;
 	} else {
 		validAddress.name = toValidate.name;
+	}
+
+	// Check if it contains only whitespaces
+	if (/^\s*$/.test(toValidate.description)) {
+		return false;
+	} else {
+		validAddress.description = toValidate.description;
 	}
 
 	validAddress.id = toValidate.id;
