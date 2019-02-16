@@ -1,4 +1,4 @@
-import { spawnSync } from "child_process";
+import { spawnSync, SpawnSyncReturns } from "child_process";
 import { Address } from "../types/Data";
 
 // Command format to change IP:
@@ -12,10 +12,15 @@ import { Address } from "../types/Data";
 export abstract class CommandHandler {
 
 	public static changeIp(address: Address) {
-		const addrType = address.isStatic ? "static" : "dynamic";
 
-		// tslint:disable-next-line:max-line-length
-		const cmd = spawnSync("cmd", ["/c", `netsh interface ${address.type} set address name=\"${address.name}\" ${addrType} ${address.address} ${address.subnet} ${address.gateway}`]);
+		let cmd: SpawnSyncReturns<string>;
+		if (address.isStatic) {
+			const addrType = "static";
+			// tslint:disable-next-line:max-line-length
+			cmd = spawnSync("cmd", ["/c", `netsh interface ${address.type} set address name=\"${address.name}\" ${addrType} ${address.address} ${address.subnet} ${address.gateway}`]);
+		} else {
+			cmd = spawnSync("cmd", ["/c", `netsh interface ${address.type} set address name=\"${address.name}\" dhcp`]);
+		}
 
 		switch (cmd.status) {
 			case 0:

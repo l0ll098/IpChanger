@@ -20,10 +20,10 @@
             </div>
         </div>
 
+
         <div class="sameLine">
             <mat-form-field class="fullPage">
-                <input type="text" matInput #name formControlName="name" placeholder="Enter interface name" required
-                    maxlength="100">
+                <input type="text" matInput #name formControlName="name" placeholder="Enter interface name" required maxlength="100">
                 <mat-hint align="end">{{name.value?.length || 0}}/100</mat-hint>
                 <mat-error *ngIf="FormControls.name.hasError('required')">
                     This field is <strong>required</strong>!
@@ -34,8 +34,7 @@
             </mat-form-field>
 
             <mat-form-field class="fullPage">
-                <input type="text" matInput #description formControlName="description" placeholder="Enter a description" required
-                    maxlength="100">
+                <input type="text" matInput #description formControlName="description" placeholder="Enter a description" required maxlength="100">
                 <mat-hint align="end">{{description.value?.length || 0}}/255</mat-hint>
                 <mat-error *ngIf="FormControls.description.hasError('required')">
                     This field is <strong>required</strong>!
@@ -46,38 +45,43 @@
             </mat-form-field>
         </div>
 
-        <mat-form-field class="fullPage">
-            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter address"
-                formControlName="address"></app-address-form-field>
-            <mat-error *ngIf="FormControls.address.hasError('required')">
-                This field is <strong>required</strong>!
-            </mat-error>
-            <mat-error *ngIf="FormControls.address.hasError('ipAddress')">
-                Malformed IP address
-            </mat-error>
-        </mat-form-field>
+        <div *ngIf="FormControls.isStatic.value == 'true'">
+            <mat-form-field class="fullPage">
+                <app-address-form-field type="{{FormControls.type.value}}"
+                    required="FormControls.isStatic.value == 'true'" placeholder="Enter address"
+                    formControlName="address"></app-address-form-field>
+                <mat-error *ngIf="FormControls.address.hasError('required')">
+                    This field is <strong>required</strong>!
+                </mat-error>
+                <mat-error *ngIf="FormControls.address.hasError('ipAddress')">
+                    Malformed IP address
+                </mat-error>
+            </mat-form-field>
 
-        <mat-form-field class="fullPage">
-            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter subnet mask"
-                formControlName="subnet"></app-address-form-field>
-            <mat-error *ngIf="FormControls.subnet.hasError('required')">
-                This field is <strong>required</strong>!
-            </mat-error>
-            <mat-error *ngIf="FormControls.subnet.hasError('ipAddress')">
-                Malformed IP address
-            </mat-error>
-        </mat-form-field>
+            <mat-form-field class="fullPage">
+                <app-address-form-field type="{{FormControls.type.value}}"
+                    required="FormControls.isStatic.value == 'true'" placeholder="Enter subnet mask"
+                    formControlName="subnet"></app-address-form-field>
+                <mat-error *ngIf="FormControls.subnet.hasError('required')">
+                    This field is <strong>required</strong>!
+                </mat-error>
+                <mat-error *ngIf="FormControls.subnet.hasError('ipAddress')">
+                    Malformed IP address
+                </mat-error>
+            </mat-form-field>
 
-        <mat-form-field class="fullPage">
-            <app-address-form-field type="{{FormControls.type.value}}" required placeholder="Enter gateway address"
-                formControlName="gateway"></app-address-form-field>
-            <mat-error *ngIf="FormControls.gateway.hasError('required')">
-                This field is <strong>required</strong>!
-            </mat-error>
-            <mat-error *ngIf="FormControls.gateway.hasError('ipAddress')">
-                Malformed IP address
-            </mat-error>
-        </mat-form-field>
+            <mat-form-field class="fullPage">
+                <app-address-form-field type="{{FormControls.type.value}}"
+                    required="FormControls.isStatic.value == 'true'" placeholder="Enter gateway address"
+                    formControlName="gateway"></app-address-form-field>
+                <mat-error *ngIf="FormControls.gateway.hasError('required')">
+                    This field is <strong>required</strong>!
+                </mat-error>
+                <mat-error *ngIf="FormControls.gateway.hasError('ipAddress')">
+                    Malformed IP address
+                </mat-error>
+            </mat-form-field>
+        </div>
     </div>
 
     <button mat-raised-button color="accent" (click)="save()" id="saveBtn"

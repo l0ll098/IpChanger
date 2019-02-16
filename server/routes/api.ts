@@ -51,18 +51,31 @@ router.get("/addresses/:id", (req, res) => {
 
 router.post("/addresses", async (req, res) => {
 	const address = parseAddress(req);
-	const validAddress = addressValidator(address as Address);
 
-	if (typeof address === "object" && typeof validAddress === "object") {
-		try {
-			await AddressesFileHanlder.addAddress(validAddress);
+	if (typeof address === "boolean") {
+		return sendErr(res, HttpStatus.BadRequest, { malformedAddress: true });
+	}
 
-			return sendOK(res, { address: validAddress }, HttpStatus.Created);
-		} catch (err) {
-			return sendErr(res, HttpStatus.InternalServerError, err);
+	let validAddress: Address;
+	if (address.isStatic) {
+		validAddress = addressValidator(address as Address) as Address;
+
+		if (typeof validAddress === "boolean") {
+			return sendErr(res, HttpStatus.BadRequest, { malformedAddress: true });
 		}
 	} else {
-		return sendErr(res, HttpStatus.BadRequest, { malformedAddress: true });
+		validAddress = address as Address;
+		validAddress.address = "";
+		validAddress.gateway = "";
+		validAddress.subnet = "";
+	}
+
+	try {
+		await AddressesFileHanlder.addAddress(validAddress);
+
+		return sendOK(res, { address: validAddress }, HttpStatus.Created);
+	} catch (err) {
+		return sendErr(res, HttpStatus.InternalServerError, err);
 	}
 
 });
