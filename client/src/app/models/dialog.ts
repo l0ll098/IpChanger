@@ -1,6 +1,7 @@
 export interface DialogData {
 	title: string;
 	message: string;
+	secondMessage?: string;
 
 	doActionBtn: DialogButton;
 	cancelBtn?: DialogButton;

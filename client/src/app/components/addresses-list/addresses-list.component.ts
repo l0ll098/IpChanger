@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
-import { MatDialog, MatSlideToggleChange } from "@angular/material";
+import { MatDialog, MatSlideToggleChange, MatSnackBar } from "@angular/material";
 
 import { HttpService } from "../../services/http.service";
 import { Address } from "../../models/Address";
@@ -20,7 +20,8 @@ export class AppAddressesListComponent implements OnInit {
 
 	constructor(
 		private httpService: HttpService,
-		private dialog: MatDialog) { }
+		private dialog: MatDialog,
+		private snackBar: MatSnackBar) { }
 
 	ngOnInit(): void {
 		let id = 0;
@@ -84,9 +85,44 @@ export class AppAddressesListComponent implements OnInit {
 				this.httpService.changeIp(this.addresses[id])
 					.then(() => {
 						console.log("changed");
+
+						this.snackBar.open("Address changed!", "Ok", { duration: 3000 });
 					})
 					.catch((err) => {
 						console.log(err);
+
+						if (err.status === 304) {
+							this.dialog.open(DialogComponent, {
+								data: {
+									title: "Error",
+									message: "Address cannot be changed as the entered network interface is not correct.",
+									secondMessage: "Try again with a different address.",
+									doActionBtn: {
+										text: "Ok",
+										onClick: () => {
+											// Set to false the form control of the incorrect network interface
+											this.addressFG.controls["fc" + id].setValue(false);
+										}
+									}
+								}
+							});
+						}
+
+						if (err.status === 403) {
+							this.dialog.open(DialogComponent, {
+								data: {
+									title: "Error",
+									message: "In order to change address, this program has to be run as administrator.",
+									doActionBtn: {
+										text: "Ok",
+										onClick: () => {
+											// Set to false the form control of the incorrect network interface
+											this.addressFG.controls["fc" + id].setValue(false);
+										}
+									}
+								}
+							});
+						}
 					});
 			}
 
