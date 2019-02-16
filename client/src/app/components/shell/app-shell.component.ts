@@ -55,6 +55,7 @@ export class AppShellComponent implements AfterViewInit {
 					this.pathVisited.push(event.url);
 				} else {
 					this.pathVisited = ["/"];
+					this.showNewFAB = true;
 				}
 			}
 		});
