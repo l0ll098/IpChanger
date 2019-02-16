@@ -11,6 +11,7 @@ const Tasks = Object.freeze({
     BuildServer: "BuildServer",
     CopyPackageJson: "CopyPackageJson",
     CopyPackageLockJson: "CopyPackageLockJson",
+    CopyIcon: "CopyIcon",
 
     BuildClient: "BuildClient",
     CopyClientDist: "CopyClientDist",
@@ -41,6 +42,11 @@ gulp.task(Tasks.CopyPackageJson, () => {
 
 gulp.task(Tasks.CopyPackageLockJson, () => {
     return gulp.src("./package-lock.json")
+        .pipe(gulp.dest(DIST_FOLDER));
+});
+
+gulp.task(Tasks.CopyIcon, () => {
+    return gulp.src("./icon.ico")
         .pipe(gulp.dest(DIST_FOLDER));
 });
 
@@ -82,7 +88,8 @@ gulp.task(Tasks.BuildAndCopyFiles, (done) => {
         Tasks.CopyClientDist,
         gulp.parallel(
             Tasks.CopyPackageJson,
-            Tasks.CopyPackageLockJson
+            Tasks.CopyPackageLockJson,
+            Tasks.CopyIcon
         )
     )(done);
 });

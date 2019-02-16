@@ -155,7 +155,7 @@ function createWindow() {
 	win = new BrowserWindow({
 		width: 1366,
 		height: 768,
-		// icon: ,
+		icon: path.join(__dirname, "icon.ico"),
 		title: APP_TITLE
 	});
 
