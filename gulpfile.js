@@ -16,6 +16,9 @@ const Tasks = Object.freeze({
     BuildClient: "BuildClient",
     CopyClientDist: "CopyClientDist",
 
+    InstallDependenciesDist: "InstallDependenciesDist",
+    Package_Win_x64: "Package",
+
     BuildAndCopyFiles: "BuildAndCopyFiles",
     Clean: "Clean"
 });
@@ -69,6 +72,26 @@ gulp.task(Tasks.CopyClientDist, () => {
         .pipe(gulp.dest(DIST_FOLDER + "client/"));
 });
 
+/**
+ * Installs dependencies in the dist folder
+ */
+gulp.task(Tasks.InstallDependenciesDist, () => {
+    return gulp.src(DIST_FOLDER)
+        .pipe(exec("npm install", {
+            cwd: DIST_FOLDER
+        }));
+});
+
+/**
+ * Package app for win x64
+ */
+gulp.task(Tasks.Package_Win_x64, () => {
+    return gulp.src(DIST_FOLDER)
+        .pipe(exec("npm run package_win_x64", {
+            cwd: DIST_FOLDER
+        }));
+});
+
 gulp.task(Tasks.Clean, () => {
     return del([
         "dist/**",
@@ -97,6 +120,9 @@ gulp.task(Tasks.BuildAndCopyFiles, (done) => {
 gulp.task("default", (done) => {
     return gulp.series(
         Tasks.BuildAndCopyFiles,
-        // Tasks.PackageAll
+        Tasks.InstallDependenciesDist,
+        gulp.parallel(
+            Tasks.Package_Win_x64
+        )
     )(done);
 });

@@ -35,18 +35,8 @@ FilesHandler.ensureCreated();
 
 // File router
 // By default, static files are served from the <root>/client/dist folder
-const clientDistPath = __dirname.endsWith("dist") ? "../client/dist" : "client/dist";
-
-// Dev env
-if (fs.existsSync(clientDistPath)) {
-	app.use(express.static(path.join(__dirname, clientDistPath)));
-} else {
-	if (fs.existsSync(path.join(__dirname, "client"))) {
-		app.use(express.static(path.join(__dirname, "client")));
-	} else {
-		console.log("Client dist folder has not been found, did you forget it?");
-	}
-}
+const clientDistPath = "client";
+app.use(express.static(path.join(__dirname, clientDistPath)));
 
 // Set routes router
 app.use("/", routes.router);
@@ -156,7 +146,11 @@ function createWindow() {
 		width: 1366,
 		height: 768,
 		icon: path.join(__dirname, "icon.ico"),
-		title: APP_TITLE
+		title: APP_TITLE,
+		webPreferences: {
+			contextIsolation: true,
+			nodeIntegration: false
+		}
 	});
 
 	win.loadURL("http://localhost:" + (process.env.PORT || "3000") + "/");

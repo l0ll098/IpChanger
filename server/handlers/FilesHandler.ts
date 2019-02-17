@@ -1,5 +1,6 @@
 import * as path from "path";
 import * as fs from "fs";
+import { app as electronApp } from "electron";
 import { IdsHanlder } from "./IdsHandler";
 import { AddressesFile, IdsFile } from "../types/Data";
 
@@ -45,7 +46,15 @@ export abstract class FilesHandler {
 	 * This method will return the path where the files should be stored.
 	 */
 	public static getConfigsFilePath(): string {
-		return path.join(__dirname, "../../Data/");
+		if (!electronApp) {
+			return path.join(__dirname, "../../Data/");
+		} else {
+			const execPath = process.execPath;
+			const pieces = execPath.split("\\");
+			pieces.pop();
+
+			return path.join(pieces.join("\\"), "Data");
+		}
 	}
 
 	public static ensureCreated() {
