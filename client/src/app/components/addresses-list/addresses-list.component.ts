@@ -91,37 +91,55 @@ export class AppAddressesListComponent implements OnInit {
 					.catch((err) => {
 						console.log(err);
 
-						if (err.status === 304) {
-							this.dialog.open(DialogComponent, {
-								data: {
-									title: "Error",
-									message: "Address cannot be changed as the entered network interface is not correct.",
-									secondMessage: "Try again with a different address.",
-									doActionBtn: {
-										text: "Ok",
-										onClick: () => {
-											// Set to false the form control of the incorrect network interface
-											this.addressFG.controls["fc" + id].setValue(false);
+						switch (err.status) {
+							case 304:
+								this.dialog.open(DialogComponent, {
+									data: {
+										title: "Error",
+										message: "Address cannot be changed as the entered network interface is not correct.",
+										secondMessage: "Try again with a different address.",
+										doActionBtn: {
+											text: "Ok",
+											onClick: () => {
+												// Set to false the form control of the incorrect network interface
+												this.addressFG.controls["fc" + id].setValue(false);
+											}
 										}
 									}
-								}
-							});
-						}
+								});
+								break;
 
-						if (err.status === 403) {
-							this.dialog.open(DialogComponent, {
-								data: {
-									title: "Error",
-									message: "In order to change address, this program has to be run as administrator.",
-									doActionBtn: {
-										text: "Ok",
-										onClick: () => {
-											// Set to false the form control of the incorrect network interface
-											this.addressFG.controls["fc" + id].setValue(false);
+							case 403:
+								this.dialog.open(DialogComponent, {
+									data: {
+										title: "Error",
+										message: "In order to change address, this program has to be run as administrator.",
+										doActionBtn: {
+											text: "Ok",
+											onClick: () => {
+												// Set to false the form control of the incorrect network interface
+												this.addressFG.controls["fc" + id].setValue(false);
+											}
 										}
 									}
-								}
-							});
+								});
+								break;
+
+							case 500:
+								this.dialog.open(DialogComponent, {
+									data: {
+										title: "Error",
+										message: "An error occured. Please try re-running this program.",
+										doActionBtn: {
+											text: "Ok",
+											onClick: () => {
+												// Set to false the form control of the incorrect network interface
+												this.addressFG.controls["fc" + id].setValue(false);
+											}
+										}
+									}
+								});
+								break;
 						}
 					});
 			}
