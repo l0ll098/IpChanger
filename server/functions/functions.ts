@@ -32,4 +32,4 @@ export function sendErr(res: Response, error: Status, data: object, errMsg: stri
 }
 
 
-// export * from "./f1";
+export * from "./api";

@@ -1,10 +1,10 @@
 import express = require("express");
-import * as isIp from "is-ip";
+import { networkInterfaces } from "os";
 
 import { AddressesFileHanlder } from "../handlers/AddressesFileHandler";
 import { CommandHandler } from "../handlers/CommandHandler";
 
-import { sendOK, sendErr } from "../functions/functions";
+import { sendOK, sendErr, parseAddress, addressValidator, getValidNetworkInterfaceNames } from "../functions/functions";
 import { Address } from "../types/Data";
 import { HttpStatus } from "../types/HttpStatus";
 
@@ -116,72 +116,28 @@ router.put("/addresses/:id", async (req, res) => {
 
 });
 
-
-/**
- * Reads and returns an Address from the request body
- * @param req The HTTP request
- * @param generateId Set this to true if you are inserting a new Address. Use false, if you are parsing the Address to perform an update
- */
-function parseAddress(req: express.Request, generateId: boolean = true): Address | false {
-	const address: Address = {
-		id: generateId ? AddressesFileHanlder.generateId() : parseInt(req.params.id, 10),
-		type: req.body.type,
-		name: req.body.name,
-		isStatic: req.body.isStatic ? true : false,
-		address: req.body.address,
-		subnet: req.body.subnet,
-		gateway: req.body.gateway,
-		description: req.body.description
-	};
-
-	return address;
-}
-
-/**
- * Checks if the passed Address is correct.
- * If so, it will be returned. Otherwise, a false result will be returned
- * @param toValidate The Address that has to be validated
- */
-function addressValidator(toValidate: Address): Address | false {
-	// By defualt, it's an empty Address
-	const validAddress: Address = {
-		type: "ipv4",
-		name: "",
-		isStatic: true,
-		address: "",
-		subnet: "",
-		gateway: "",
-		description: ""
-	};
-
-	if (toValidate.type !== "ipv4" && toValidate.type !== "ipv6") {
-		return false;
+router.get("/interfaces", async (req, res) => {
+	try {
+		return sendOK(res, getValidNetworkInterfaceNames());
+	} catch (err) {
+		return sendErr(res, HttpStatus.InternalServerError, err);
 	}
+});
 
-	if (isIp(toValidate.address) && isIp(toValidate.subnet) && isIp(toValidate.gateway)) {
-		validAddress.address = toValidate.address;
-		validAddress.gateway = toValidate.gateway;
-		validAddress.subnet = toValidate.subnet;
-	} else {
-		return false;
+router.get("/interfaces/:name", async (req, res) => {
+	try {
+		const interfaces = networkInterfaces();
+		const names = Object.keys(interfaces);
+
+		if (names.indexOf(req.params.name) > -1) {
+			return sendOK(res, interfaces[req.params.name]);
+		} else {
+			return sendErr(res, HttpStatus.BadRequest, { invalidInterface: true });
+		}
+	} catch (err) {
+		return sendErr(res, HttpStatus.InternalServerError, err);
 	}
+});
 
-	// Check if it contains only whitespaces
-	if (/^\s*$/.test(toValidate.name)) {
-		return false;
-	} else {
-		validAddress.name = toValidate.name;
-	}
-
-	// Check if it contains only whitespaces
-	if (/^\s*$/.test(toValidate.description)) {
-		return false;
-	} else {
-		validAddress.description = toValidate.description;
-	}
-
-	validAddress.id = toValidate.id;
-	return validAddress;
-}
 
 export { router };
