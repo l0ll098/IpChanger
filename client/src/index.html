@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Ip Changer</title>
@@ -10,7 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
   <link rel="shortcut icon" href="/assets/icons/favicon.ico">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="msapplication-TileColor" content="#2b5797">
   <meta name="msapplication-config" content="/assets/icons/browserconfig.xml">
@@ -18,6 +19,40 @@
 </head>
 
 <body>
-  <app-root></app-root>
+  <app-root>
+    <style>
+      * {
+        font-family: "Roboto", sans-serif;
+      }
+
+      #bootstrappingScreen {
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        width: calc(100% - 8px);
+        margin: 0 auto;
+        margin-top: -48px;
+      }
+
+      #bootstrappingScreen div {
+        margin-top: 10px;
+      }
+    </style>
+
+    <div id="bootstrappingScreen">
+      <img src="assets/icons/android-chrome-192x192.png" alt="IP Changer" height="96" width="96" />
+
+      <br />
+      <div>
+        IP Changer
+        <br><br><br>
+        <noscript>
+          Sorry, JavaScript needs to be enabled in order to run this application
+        </noscript>
+      </div>
+    </div>
+  </app-root>
+
 </body>
+
 </html>
