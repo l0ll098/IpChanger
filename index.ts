@@ -142,9 +142,19 @@ let win: BrowserWindow;
  * This function creates the window
  */
 function createWindow() {
+	const windowStateKeeper = require("electron-window-state");
+
+	// Load the previous state with fallback to defaults
+	const mainWindowState = windowStateKeeper({
+		defaultWidth: 1366,
+		defaultHeight: 768
+	});
+
 	win = new BrowserWindow({
-		width: 1366,
-		height: 768,
+		width: mainWindowState.width,
+		height: mainWindowState.height,
+		x: mainWindowState.x,
+		y: mainWindowState.y,
 		icon: path.join(__dirname, "icon.ico"),
 		title: APP_TITLE,
 		webPreferences: {
@@ -158,6 +168,11 @@ function createWindow() {
 	win.on("closed", () => {
 		win = null;
 	});
+
+	// Let us register listeners on the window, so we can update the state
+	// automatically (the listeners will be removed when the window is closed)
+	// and restore the maximized or full screen state
+	mainWindowState.manage(win);
 }
 
 if (electronApp) {

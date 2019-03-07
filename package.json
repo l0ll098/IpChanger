@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "body-parser": "^1.17.2",
+    "electron-window-state": "^5.0.3",
     "express": "^4.15.4",
     "is-ip": "^2.0.0"
   },

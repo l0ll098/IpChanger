@@ -11,9 +11,13 @@ The second part is an Angular app that provides an handy interface to the APIs.
 # Development
 In order to compile both the server and client side (without packaging them), run the following command: 
 
-`$ npm run gulp BuildAndCopyFiles`
+```
+$ npm run gulp BuildAndCopyFiles
+```
 
 To build and package the application, run:
 
-`$ npm run gulp`
+```
+$ npm run gulp
+```
 
