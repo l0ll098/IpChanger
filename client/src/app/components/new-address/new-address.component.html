@@ -23,18 +23,29 @@
 
         <div class="sameLine">
             <mat-form-field class="fullPage">
-                <input type="text" matInput #name formControlName="name" placeholder="Enter interface name" required maxlength="100">
-                <mat-hint align="end">{{name.value?.length || 0}}/100</mat-hint>
+                <input type="text" matInput #name formControlName="name" [matAutocomplete]="interfaces"
+                    placeholder="Choose an interface" required>
                 <mat-error *ngIf="FormControls.name.hasError('required')">
                     This field is <strong>required</strong>!
                 </mat-error>
-                <mat-error *ngIf="FormControls.name.hasError('maxlength')">
-                    Too long!
-                </mat-error>
             </mat-form-field>
 
+            <mat-autocomplete #interfaces="matAutocomplete">
+                <div *ngIf="filteredInterfaces.length > 0; else noInterfacesFound">
+                    <mat-option *ngFor="let interface of filteredInterfaces; trackBy: trackByFn" [value]="interface">
+                        {{ interface }}
+                    </mat-option>
+                </div>
+                <ng-template #noInterfacesFound>
+                    <mat-option>
+                        <i>No interfaces with that name were found</i>
+                    </mat-option>
+                </ng-template>
+            </mat-autocomplete>
+
             <mat-form-field class="fullPage">
-                <input type="text" matInput #description formControlName="description" placeholder="Enter a description" required maxlength="100">
+                <input type="text" matInput #description formControlName="description" placeholder="Enter a description"
+                    required maxlength="100">
                 <mat-hint align="end">{{description.value?.length || 0}}/255</mat-hint>
                 <mat-error *ngIf="FormControls.description.hasError('required')">
                     This field is <strong>required</strong>!

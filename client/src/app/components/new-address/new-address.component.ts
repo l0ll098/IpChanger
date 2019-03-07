@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, AfterViewInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material";
@@ -14,7 +14,7 @@ import { Ip } from "../../models/Ip";
 	templateUrl: "new-address.component.html",
 	styleUrls: ["new-address.component.css"]
 })
-export class AppNewAddressComponent {
+export class AppNewAddressComponent implements AfterViewInit {
 
 	public disableSaveButton = false;
 	public FormControls = {
@@ -37,6 +37,9 @@ export class AppNewAddressComponent {
 		gateway: this.FormControls.gateway
 	});
 
+	public filteredInterfaces = [];
+
+
 	constructor(
 		private httpService: HttpService,
 		private router: Router,
@@ -49,6 +52,35 @@ export class AppNewAddressComponent {
 		this.FormControls.address.setValue({ block1: "", block2: "", block3: "", block4: "" } as Ip);
 		this.FormControls.subnet.setValue({ block1: "", block2: "", block3: "", block4: "" } as Ip);
 		this.FormControls.gateway.setValue({ block1: "", block2: "", block3: "", block4: "" } as Ip);
+	}
+
+	ngAfterViewInit(): void {
+		this.httpService.getInterfaces().then((interfaces) => {
+			this.filteredInterfaces = interfaces;
+		});
+
+		this.FormControls.name.valueChanges.subscribe((name) => {
+			this.filterInterfaces(name);
+		});
+	}
+
+	private async filterInterfaces(name: string) {
+		let toFilter = "";
+		// If user has already selected a result this if should be true
+		if (name) {
+			toFilter = name;
+		}
+
+		const interfaces = await this.httpService.getInterfaces();
+		if (toFilter === "") {
+			console.log(interfaces);
+			this.filteredInterfaces = interfaces;
+		} else {
+			// The filtered array will contain only the elements that includes the search term
+			this.filteredInterfaces = interfaces.filter((int) =>
+				int.toLocaleLowerCase().includes(toFilter.toLocaleLowerCase())
+			);
+		}
 	}
 
 	async save() {
@@ -98,4 +130,9 @@ export class AppNewAddressComponent {
 			return ip.block1 + ":" + ip.block2 + ":" + ip.block3 + ":" + ip.block4 + ":" + ip.block5 + ":" + ip.block6 + ":" + ip.block7 + ":" + ip.block8;
 		}
 	}
+
+	trackByFn(index, item) {
+		return index;
+	}
+
 }

@@ -33,4 +33,13 @@ export class HttpService {
 			return Promise.reject(err);
 		}
 	}
+
+	async getInterfaces() {
+		try {
+			const res = await this.http.get(this.api + "interfaces").toPromise() as any;
+			return Promise.resolve(res.data);
+		} catch (err) {
+			return Promise.reject(err);
+		}
+	}
 }
