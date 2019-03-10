@@ -82,12 +82,8 @@
             </mat-form-field>
 
             <mat-form-field class="fullPage">
-                <app-address-form-field type="{{FormControls.type.value}}"
-                    required="FormControls.isStatic.value == 'true'" placeholder="Enter gateway address"
+                <app-address-form-field type="{{FormControls.type.value}}" placeholder="Enter gateway address"
                     formControlName="gateway"></app-address-form-field>
-                <mat-error *ngIf="FormControls.gateway.hasError('required')">
-                    This field is <strong>required</strong>!
-                </mat-error>
                 <mat-error *ngIf="FormControls.gateway.hasError('ipAddress')">
                     Malformed IP address
                 </mat-error>

@@ -65,7 +65,13 @@ export function addressValidator(toValidate: Address): Address | false {
 		return false;
 	}
 
-	if (isIp(toValidate.address) && isIp(toValidate.subnet) && isIp(toValidate.gateway)) {
+	if (isIp(toValidate.address) && isIp(toValidate.subnet)) {
+
+		// If gateway is provided and it's not a valid ip, return false. Otherwise proceed
+		if (toValidate.gateway && !isIp(toValidate.gateway)) {
+			return false;
+		}
+
 		validAddress.address = toValidate.address;
 		validAddress.gateway = toValidate.gateway;
 		validAddress.subnet = toValidate.subnet;

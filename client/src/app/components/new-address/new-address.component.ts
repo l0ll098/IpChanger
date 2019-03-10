@@ -2,6 +2,7 @@ import { Component, AfterViewInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { MatDialog } from "@angular/material";
+import * as isIp from "is-ip";
 
 import { DialogComponent } from "../dialog/dialog.component";
 import { HttpService } from "../../services/http.service";
@@ -24,7 +25,7 @@ export class AppNewAddressComponent implements AfterViewInit {
 		isStatic: new FormControl(),
 		address: new FormControl(null, [Validators.required]),
 		subnet: new FormControl(null, [Validators.required]),
-		gateway: new FormControl(null, [Validators.required])
+		gateway: new FormControl(null, [])
 	};
 
 	public newAddressFG = new FormGroup({
@@ -123,11 +124,18 @@ export class AppNewAddressComponent implements AfterViewInit {
 	}
 
 	private ipToString(type: "ipv4" | "ipv6", ip: Ip): string {
+		let addr = "";
 		if (type === "ipv4") {
-			return ip.block1 + "." + ip.block2 + "." + ip.block3 + "." + ip.block4;
+			addr = ip.block1 + "." + ip.block2 + "." + ip.block3 + "." + ip.block4;
 		} else {
 			// tslint:disable-next-line:max-line-length
-			return ip.block1 + ":" + ip.block2 + ":" + ip.block3 + ":" + ip.block4 + ":" + ip.block5 + ":" + ip.block6 + ":" + ip.block7 + ":" + ip.block8;
+			addr = ip.block1 + ":" + ip.block2 + ":" + ip.block3 + ":" + ip.block4 + ":" + ip.block5 + ":" + ip.block6 + ":" + ip.block7 + ":" + ip.block8;
+		}
+
+		if (isIp(addr)) {
+			return addr;
+		} else {
+			return "";
 		}
 	}
 
