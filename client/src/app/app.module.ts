@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ServiceWorkerModule } from "@angular/service-worker";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { PlatformModule } from "@angular/cdk/platform";
@@ -93,7 +94,8 @@ const appRoutes: Routes = [
 		MatSortModule,
 		MatSnackBarModule,
 		MatDialogModule,
-		MatRadioModule
+		MatRadioModule,
+		ServiceWorkerModule.register("ngsw-worker.js", { enabled: environment.production })
 	],
 	providers: [
 		HttpService
