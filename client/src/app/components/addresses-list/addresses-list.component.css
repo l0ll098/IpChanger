@@ -33,3 +33,20 @@
     white-space: pre-wrap; 
     margin-right: 10px;
 }
+
+#centralImage {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    width: calc(100% - 8px);
+    margin: 0 auto;
+    margin-top: -48px;
+}
+
+#centralImage svg {
+    opacity: 0.6;
+}
+
+#centralImage div {
+    margin-top: 10px;
+}
