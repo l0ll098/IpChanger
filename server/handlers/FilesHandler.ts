@@ -1,5 +1,6 @@
 import * as path from "path";
 import * as fs from "fs";
+import * as os from "os";
 import { app as electronApp } from "electron";
 import { IdsHanlder } from "./IdsHandler";
 import { AddressesFile, IdsFile } from "../types/Data";
@@ -17,6 +18,10 @@ export const IDS_FILE_INITIALIZER: IdsFile = {
 };
 
 export abstract class FilesHandler {
+
+	// IpChanger folder in homedir.
+	// If running in Electron, this will be the folder where data are saved
+	public static _dataFolderPath: string =  path.join(os.homedir(), "IpChanger");
 
 	public static _dataFolder: string;
 	public static _addressesFilePath: string;
@@ -49,11 +54,7 @@ export abstract class FilesHandler {
 		if (!electronApp) {
 			return path.join(__dirname, "../../Data/");
 		} else {
-			const execPath = process.execPath;
-			const pieces = execPath.split("\\");
-			pieces.pop();
-
-			return path.join(pieces.join("\\"), "Data");
+			return path.join(FilesHandler._dataFolderPath, "Data");
 		}
 	}
 
@@ -61,6 +62,13 @@ export abstract class FilesHandler {
 		FilesHandler._dataFolder = FilesHandler.getConfigsFilePath();
 		FilesHandler._addressesFilePath = path.join(FilesHandler._dataFolder, ADDRESSES_FILE_NAME);
 		FilesHandler._idsFilePath = path.join(FilesHandler._dataFolder, IDS_FILE_NAME);
+
+		// Create the IpChanger folder in the homedir if running in Electron
+		if (electronApp) {
+			if (!fs.existsSync(FilesHandler._dataFolderPath)) {
+				fs.mkdirSync(FilesHandler._dataFolderPath);
+			}
+		}
 
 		// Check if file is not present
 		if (!fs.existsSync(FilesHandler._addressesFilePath)) {

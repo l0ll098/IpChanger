@@ -59,7 +59,7 @@ gulp.task(Tasks.CopyIcon, () => {
 gulp.task(Tasks.BuildClient, () => {
     return gulp
         .src("./client/")
-        .pipe(exec("npm run build", {
+        .pipe(exec("npm run build:prod", {
             cwd: "./client/"
         }));
 });
