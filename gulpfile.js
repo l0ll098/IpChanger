@@ -20,7 +20,8 @@ const Tasks = Object.freeze({
     Package_Win_x64: "Package",
 
     BuildAndCopyFiles: "BuildAndCopyFiles",
-    Clean: "Clean"
+    Clean: "Clean",
+    RemoveLocales: "RemoveLocales"
 });
 
 
@@ -101,6 +102,16 @@ gulp.task(Tasks.Clean, () => {
 });
 
 /**
+ * Remove unused locales.
+ * Keep only [en-GB.pak, en-US.pak, it.pak]
+ */
+gulp.task(Tasks.RemoveLocales, () => {
+    return del("locales/!(en-GB|en-US|it)*.pak", {
+        cwd: "dist/bin/ipchanger-win32-x64"
+    });
+});
+
+/**
  * Run all
  */
 gulp.task(Tasks.BuildAndCopyFiles, (done) => {
@@ -123,6 +134,7 @@ gulp.task("default", (done) => {
         Tasks.InstallDependenciesDist,
         gulp.parallel(
             Tasks.Package_Win_x64
-        )
+        ),
+        Tasks.RemoveLocales
     )(done);
 });
