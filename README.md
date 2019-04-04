@@ -42,3 +42,12 @@ To build and package the application, run:
 $ npm run gulp
 ```
 
+## Windows 10 app
+In order to package it as a Windows 10 app, you will have to run those commands
+```
+npm install -g electron-windows-store
+
+electron-windows-store --input-directory ./dist/bin/ipchanger-win32-x64 --output-directory ./dist/bin/msStore --package-version 1.0.0.0 --package-name IpChanger --package-display-name IpChanger --package-description "A GUI based tool to change IP addresses on Windows" --assets "./client/src/assets" --publisher-display-name "Ip Changer" --manifest ./AppXManifest.xml
+```
+
+**Note**: the second command, must be executed in an high privileges command prompt (run as Administrator)
